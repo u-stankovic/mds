@@ -13,14 +13,12 @@ Ovo je jednostavan, asinhroni event-driven sistem izgrađen pomoću **Spring Boo
 
 ---
 
-## Pokretanje Infrastrukture (Docker)
+## Pokretanje Aplikacije i Infrastrukture (Docker)
 
-Za testiranje aplikacije lokalno, unutar projekta se nalazi `docker-compose.yml` fajl koji podiže kompletan Kafka klaster (Zookeeper i Kafka broker).
-
+Kompletna aplikacija i potrebna Kafka infrastruktura su potpuno dockerizovane. Za pokretanje celog sistema (Zookeeper, Kafka broker i sama Spring Boot aplikacija) potrebno je pokrenuti:
 ```bash
-docker-compose up -d
+docker-compose up --build
 ```
----
 
 ## Testiranje Aplikacije
 
