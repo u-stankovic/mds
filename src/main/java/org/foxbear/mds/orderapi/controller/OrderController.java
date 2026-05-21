@@ -6,6 +6,7 @@ import org.foxbear.mds.orderapi.service.OrderProducerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/orders")
@@ -40,14 +41,15 @@ public class OrderController {
     public ResponseEntity<String> runStressTest(@RequestParam(defaultValue = "20") int count) {
         log.info("Započinjem stress test: Generišem {} porudžbina...", count);
 
-        for (int i = 1; i <= count; i++) {
-            String uniqueOrderId = "STRESS-" + System.currentTimeMillis() + "-" + i;
+        CompletableFuture.runAsync(() -> {
+            for (int i = 1; i <= count; i++) {
+                String uniqueOrderId = "STRESS-" + System.currentTimeMillis() + "-" + i;
+                OrderEvent testEvent = new OrderEvent(uniqueOrderId, "item-1", 2);
+                producerService.sendOrder(testEvent);
+            }
+            log.info("Stress test uspešno završen. Poslato {} poruka.", count);
+        });
 
-            OrderEvent testEvent = new OrderEvent(uniqueOrderId, "item-1", 2);
-
-            producerService.sendOrder(testEvent);
-        }
-
-        return ResponseEntity.ok("Uspešno poslato " + count + " poruka na Kafku.");
+        return ResponseEntity.ok("Stress test pokrenut u pozadini za " + count + " poruka.");
     }
 }
