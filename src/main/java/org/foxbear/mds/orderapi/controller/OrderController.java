@@ -36,5 +36,18 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
+    @PostMapping("/stress-test")
+    public ResponseEntity<String> runStressTest(@RequestParam(defaultValue = "20") int count) {
+        log.info("Započinjem stress test: Generišem {} porudžbina...", count);
 
+        for (int i = 1; i <= count; i++) {
+            String uniqueOrderId = "STRESS-" + System.currentTimeMillis() + "-" + i;
+
+            OrderEvent testEvent = new OrderEvent(uniqueOrderId, "item-1", 2);
+
+            producerService.sendOrder(testEvent);
+        }
+
+        return ResponseEntity.ok("Uspešno poslato " + count + " poruka na Kafku.");
+    }
 }
