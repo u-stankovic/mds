@@ -1,4 +1,4 @@
-# Spring Kafka MVP - Sistem za ubradu porudžbina
+# Spring Kafka MVP - Sistem za obradu porudžbina
 
 Ovo je jednostavan, asinhroni event-driven sistem izgrađen pomoću **Spring Boot**-a i **Apache Kafka** brokera. Projekat simulira osnovni tok između kreiranja porudžbine i provere stanja na lageru.
 
